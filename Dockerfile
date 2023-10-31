@@ -35,6 +35,8 @@ RUN docker-php-ext-enable opcache
 
 # copy dev php.ini
 
+COPY .pgpass /var/www/.pgpass
+
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 
 RUN php -v
@@ -50,6 +52,12 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
 #RUN a2ensite default-ssl
 #RUN a2enmod ssl
 #RUN a2enmod rewrite
+
+RUN apt-get update && apt-get -y install nano
+RUN apt-get -y install cron
+RUN crontab -l | { cat; echo "* * * * * sh /var/www/runschedule.sh >> /var/log/cron.log 2>&1"; } | crontab -
+RUN service cron start
+RUN service cron status
 
 WORKDIR /var/www
 
