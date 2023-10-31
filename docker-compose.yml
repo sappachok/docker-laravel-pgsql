@@ -10,8 +10,8 @@ services:
       #- 9000:9000
     working_dir: /var/www
     volumes:
-      #- ./app:/var/www
-      - c://xampp3//htdocs//laravel//app:/var/www
+      - ./app:/var/www
+      #- c://xampp3//htdocs//laravel//app:/var/www
 
     restart: unless-stopped
     networks:
@@ -27,7 +27,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - c://xampp3//htdocs//laravel//app:/var/www
+      - ./app:/var/www
       - ./nginx/conf.d/:/etc/nginx/conf.d/
     links:
       - app
